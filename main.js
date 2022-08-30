@@ -5,7 +5,7 @@ import { minify } from "./lib/minify.js";
 export { minify } from "./lib/minify.js";
 export { run_cli as _run_cli } from "./lib/cli.js";
 
-export async function _default_options() {
+export function _default_options() {
     const defs = {};
 
     Object.keys(infer_options({ 0: 0 })).forEach((component) => {
@@ -18,9 +18,9 @@ export async function _default_options() {
     return defs;
 }
 
-async function infer_options(options) {
+function infer_options(options) {
     try {
-        await minify("", options);
+        minify("", options);
     } catch (error) {
         return error.defs;
     }

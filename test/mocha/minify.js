@@ -55,7 +55,7 @@ describe("minify", function() {
     });
 
     it("Should refuse `format` and `output` option together", async function() {
-        await assert.rejects(() => minify("x(1,2);", { format: { beautify: true }, output: { beautify: true } }));
+        await assert.throws(() => minify("x(1,2);", { format: { beautify: true }, output: { beautify: true } }));
     });
 
     it("Should work with mangle.cache", async function() {
@@ -196,10 +196,10 @@ describe("minify", function() {
     });
 
     it("Should not parse invalid use of reserved words", async function() {
-        await assert.doesNotReject(() => minify("function enum(){}"));
-        await assert.doesNotReject(() => minify("function static(){}"));
-        await assert.rejects(() => minify("function super(){}"), {message: "Unexpected token: name (super)" });
-        await assert.rejects(() => minify("function this(){}"), {message: "Unexpected token: name (this)" });
+        await assert.doesNotThrow(() => minify("function enum(){}"));
+        await assert.doesNotThrow(() => minify("function static(){}"));
+        await assert.throws(() => minify("function super(){}"), {message: "Unexpected token: name (super)" });
+        await assert.throws(() => minify("function this(){}"), {message: "Unexpected token: name (this)" });
     });
 
     describe("keep_quoted_props", function() {
@@ -296,7 +296,7 @@ describe("minify", function() {
             assert.strictEqual(code, readFileSync("test/input/issue-520/output.js", "utf8"));
         });
         it("Should fail with multiple input and inline source map", async function() {
-            await assert.rejects(
+            await assert.throws(
                 () =>
                     minify([
                         read("./test/input/issue-520/input.js"),
@@ -347,13 +347,13 @@ describe("minify", function() {
 
     describe("JS_Parse_Error", function() {
         it("Should return syntax error", async function() {
-            await assert.rejects(
+            await assert.throws(
                 () => minify("function f(a{}"),
                 {message: "Unexpected token punc «{», expected punc «,»"}
             );
         });
         it("Should reject duplicated label name", async function() {
-            await assert.rejects(
+            await assert.throws(
                 () => minify("L:{L:{}}"),
                 {message: "Label L defined twice"}
             );
@@ -362,7 +362,7 @@ describe("minify", function() {
 
     describe("global_defs", function() {
         it("Should throw for non-trivial expressions", async function() {
-            await assert.rejects(
+            await assert.throws(
                 () => minify("alert(42);", {
                     compress: {
                         global_defs: {
@@ -402,14 +402,14 @@ describe("minify", function() {
             "const a=1;var[a]=[2];",
             "const[a]=[1];var[a]=[2];",
         ], async code => {
-            await assert.doesNotReject(
+            await assert.doesNotThrow(
                 () => minify(code, {
                     compress: false,
                     mangle: false
                 }),
                 JSON.stringify(code) + " should be compressed"
             );
-            await assert.rejects(
+            await assert.throws(
                 () => minify(code),
                 { message: '"a" is redeclared' },
                 JSON.stringify(code) + " should throw a SyntaxError"
@@ -516,9 +516,9 @@ describe("minify", function() {
                 var expected_error = entry[1];
 
                 if (!expected_error) {
-                    await assert.doesNotReject(() => minify(code));
+                    await assert.doesNotThrow(() => minify(code));
                 } else {
-                    await assert.rejects(
+                    await assert.throws(
                         () => minify(code),
                         {message: expected_error},
                         JSON.stringify(entry)

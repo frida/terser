@@ -207,4 +207,4 @@ export interface SourceMapOptions {
     url?: string | 'inline';
 }
 
-export function minify(files: string | string[] | { [file: string]: string }, options?: MinifyOptions): Promise<MinifyOutput>;
+export function minify(files: string | string[] | { [file: string]: string }, options?: MinifyOptions): MinifyOutput;

@@ -285,7 +285,7 @@ async function run_compress_tests() {
                     });
                     return false;
                 }
-                if (test.reminify && !await reminify(test, input_code, input_formatted)) {
+                if (test.reminify && !reminify(test, input_code, input_formatted)) {
                     return false;
                 }
             }
@@ -474,7 +474,7 @@ function evaluate(code) {
 
 // Try to reminify original input with standard options
 // to see if it matches expect_stdout.
-async function reminify(test, input_code, input_formatted) {
+function reminify(test, input_code, input_formatted) {
     if (process.env.TEST_NO_REMINIFY) return true;
     const { options: orig_options, expect_stdout } = test;
     for (var i = 0; i < minify_options.length; i++) {
@@ -491,7 +491,7 @@ async function reminify(test, input_code, input_formatted) {
             options.mangle.keep_fnames = orig_options.mangle.keep_fnames;
         }
         var options_formatted = JSON.stringify(options, null, 4);
-        var result = await minify(input_code, options);
+        var result = minify(input_code, options);
         if (result.error) {
             log("!!! failed input reminify\n---INPUT---\n{input}\n--ERROR---\n{error}\n\n", {
                 input: input_formatted,

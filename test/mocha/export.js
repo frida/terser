@@ -57,20 +57,20 @@ describe("Export/Import", function() {
     });
 
     it("Should not parse invalid uses of export", async function() {
-        await assert.rejects(() => minify("export"), { message: "Unexpected token: eof (undefined)" });
-        await assert.rejects(() => minify("export;"), { message: "Unexpected token: punc (;)" });
-        await assert.rejects(() => minify("export();"), { message: "Unexpected token: keyword (export)" });
-        await assert.rejects(() => minify("export(1);"), { message: "Unexpected token: keyword (export)" });
-        await assert.rejects(() => minify("var export;"), { message: "Name expected" });
-        await assert.rejects(() => minify("var export = 1;"), { message: "Name expected" });
-        await assert.rejects(() => minify("function f(export){}"), { message: "Invalid function parameter" });
+        await assert.throws(() => minify("export"), { message: "Unexpected token: eof (undefined)" });
+        await assert.throws(() => minify("export;"), { message: "Unexpected token: punc (;)" });
+        await assert.throws(() => minify("export();"), { message: "Unexpected token: keyword (export)" });
+        await assert.throws(() => minify("export(1);"), { message: "Unexpected token: keyword (export)" });
+        await assert.throws(() => minify("var export;"), { message: "Name expected" });
+        await assert.throws(() => minify("var export = 1;"), { message: "Name expected" });
+        await assert.throws(() => minify("function f(export){}"), { message: "Invalid function parameter" });
     });
 
     it("Should not parse invalid uses of import", async function() {
-        await assert.rejects(() => minify("import"), { message: "Unexpected token: eof (undefined)" });
-        await assert.rejects(() => minify("import;"), { message: "Unexpected token: punc (;)" });
-        await assert.rejects(() => minify("var import;"), { message: "Unexpected token: import" });
-        await assert.rejects(() => minify("var import = 1;"), { message: "Unexpected token: import" });
-        await assert.rejects(() => minify("function f(import){}"), { message: "Unexpected token: name (import)" });
+        await assert.throws(() => minify("import"), { message: "Unexpected token: eof (undefined)" });
+        await assert.throws(() => minify("import;"), { message: "Unexpected token: punc (;)" });
+        await assert.throws(() => minify("var import;"), { message: "Unexpected token: import" });
+        await assert.throws(() => minify("var import = 1;"), { message: "Unexpected token: import" });
+        await assert.throws(() => minify("function f(import){}"), { message: "Unexpected token: name (import)" });
     });
 });
